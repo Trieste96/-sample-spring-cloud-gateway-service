@@ -1,0 +1,32 @@
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+  server:
+    wait-time-in-ms-when-sync-empty: 3000
+
+server:
+  port: 8082
+spring:
+  zipkin:
+    base-url: http://localhost:8085/
+
+  application:
+    name: cloud-gateway-service
+
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: http://localhost:8083/
+          predicates:
+            - Path=/order/**
+          filters:
+            - StripPrefix=1
+    loadbalancer:
+      ribbon:
+        - enabled=false
